@@ -7,6 +7,7 @@
 
 using testing::_;
 using testing::Return;
+using testing::SaveArg;
 
 class ThermostatTest : public ::testing::Test {
   protected:
@@ -67,10 +68,12 @@ TEST_F(ThermostatTest, startThermostat) {
     std::unique_ptr<RoomInterface> _roomPtr(_room);
 
     Thermostat t(std::move(_roomPtr), std::move(_timerPtr));
+    std::function<void()> func;
 
-    EXPECT_CALL(*_timer, configure(_, _));
+    EXPECT_CALL(*_timer, configure(_, _)).WillOnce(SaveArg<1>(&func));
     EXPECT_CALL(*_timer, start());
     t.turnOn();
+    func();
 }
 
 TEST_F(ThermostatTest, newStateShouldHeat) {
@@ -79,9 +82,12 @@ TEST_F(ThermostatTest, newStateShouldHeat) {
 
     Thermostat t(std::move(_roomPtr), std::move(_timerPtr));
 
+    std::function<void()> func;
     t.setTemperature(TemperatureRange(22, 25));
     ON_CALL(*_room, getTemperature).WillByDefault(Return(20));
+    EXPECT_CALL(*_timer, configure(_, _)).WillOnce(SaveArg<1>(&func));
     t.turnOn();
+    func();
 
     ASSERT_EQ(t.getState(), ThermostatState::HEATING);
 }
@@ -92,9 +98,12 @@ TEST_F(ThermostatTest, newStateShouldCool) {
 
     Thermostat t(std::move(_roomPtr), std::move(_timerPtr));
 
+    std::function<void()> func;
     t.setTemperature(TemperatureRange(22, 25));
     ON_CALL(*_room, getTemperature).WillByDefault(Return(44));
+    EXPECT_CALL(*_timer, configure(_, _)).WillOnce(SaveArg<1>(&func));
     t.turnOn();
+    func();
 
     ASSERT_EQ(t.getState(), ThermostatState::COOLING);
 }
@@ -105,9 +114,12 @@ TEST_F(ThermostatTest, newStateShouldBeIdle) {
 
     Thermostat t(std::move(_roomPtr), std::move(_timerPtr));
 
+    std::function<void()> func;
     t.setTemperature(TemperatureRange(22, 25));
     ON_CALL(*_room, getTemperature).WillByDefault(Return(23));
+    EXPECT_CALL(*_timer, configure(_, _)).WillOnce(SaveArg<1>(&func));
     t.turnOn();
+    func();
 
     ASSERT_EQ(t.getState(), ThermostatState::IDLE);
 }

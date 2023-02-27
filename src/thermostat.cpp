@@ -21,7 +21,6 @@ TemperatureRange Thermostat::getTemperature() const { return _temperature; }
 ThermostatState Thermostat::getState() const { return _state; }
 
 void Thermostat::turnOn() {
-    _state = getNewState();
     _timer->configure(std::chrono::seconds(20), [this]() {
         std::cout << "Checking room temperature." << std::endl;
         _state = getNewState();

@@ -15,7 +15,7 @@ int main() {
         thermostat.turnOn();
 
         // simulate 100 seconds of simulation
-        std::this_thread::sleep_for(std::chrono::seconds(5));
+        std::this_thread::sleep_for(std::chrono::seconds(100));
     }
     return 0;
 }
