@@ -4,9 +4,8 @@
 #include <chrono>
 #include <functional>
 
-class TimerInterface
-{
-public:
+class TimerInterface {
+  public:
     TimerInterface() = default;
     virtual ~TimerInterface() = default;
     virtual void start() = 0;

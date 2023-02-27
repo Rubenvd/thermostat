@@ -4,18 +4,12 @@
 #include <cstdint>
 #include <utility>
 
-enum class ThermostatState {
-    OFF,
-    IDLE,
-    HEATING,
-    COOLING
-};
+enum class ThermostatState { OFF, IDLE, HEATING, COOLING };
 
 using TemperatureRange = std::pair<std::uint32_t, std::uint32_t>;
 
-class ThermostatInterface
-{
-public:
+class ThermostatInterface {
+  public:
     ThermostatInterface() = default;
     virtual ~ThermostatInterface() = default;
     virtual void setTemperature(TemperatureRange temp) = 0;

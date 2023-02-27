@@ -8,25 +8,24 @@
 
 #include <memory>
 
-class Thermostat : public ThermostatInterface
-{
-public:
+class Thermostat : public ThermostatInterface {
+  public:
     Thermostat(std::unique_ptr<RoomInterface> room,
-                std::unique_ptr<TimerInterface> timer);
+               std::unique_ptr<TimerInterface> timer);
     ~Thermostat() override = default;
     void setTemperature(TemperatureRange temp) override;
     TemperatureRange getTemperature() const override;
     ThermostatState getState() const override;
     void turnOn() override;
     void turnOff() override;
-    
-private:
-    TemperatureRange _temperature {0,0};
-    ThermostatState _state {ThermostatState::OFF};
-    
+
+  private:
+    TemperatureRange _temperature{0, 0};
+    ThermostatState _state{ThermostatState::OFF};
+
     std::unique_ptr<RoomInterface> _room;
     std::unique_ptr<TimerInterface> _timer;
-    
+
     ThermostatState getNewState() const;
 };
 

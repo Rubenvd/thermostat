@@ -5,8 +5,7 @@
 #include <stdio.h>
 #include <thread>
 
-int main()
-{
+int main() {
     {
         std::unique_ptr<TimerInterface> timer_ptr = std::make_unique<Timer>();
         std::unique_ptr<RoomInterface> room_ptr = std::make_unique<Room>();
